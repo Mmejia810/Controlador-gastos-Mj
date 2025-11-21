@@ -1,0 +1,33 @@
+name: CI Quality
+
+on:
+    push:
+    pull_request:
+
+jobs:
+    quality-check:
+        runs-on: ununtu-latest 
+
+        steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
+
+        - name: Set up Node.js
+          uses: actions/setup-node@v4
+          with:
+            node-version: 20
+
+        - name: Install dependencies
+          run: npm install
+
+        - name: Run ESLint
+          run: npm run lint
+
+        - name: run tests vitest
+          run: npm run test
+
+        - name: coverage report
+          run: npm run coverage
+
+        - name: build project
+          run: npm run build
