@@ -1,6 +1,5 @@
+import Swal from 'sweetalert2';
 import { Account, Entry, CategoryEnum } from './Account.js';
-
-
 var account;
 var initialAccount = getAccountFromStorage();
 if (initialAccount) {
@@ -29,7 +28,7 @@ function setAccountToStorage(account) {
 function updateBalanceAmount(account) {
     var balanceAmountHtmlElement = document.querySelector('#balanceAmount');
     var balanceAccount = account.getBalance();
-   balanceAmountHtmlElement.textContent = "".concat("$ ", new Intl.NumberFormat("es-CO").format(balanceAccount))
+    balanceAmountHtmlElement.textContent = "".concat(balanceAccount, "\u20AC");
 }
 var entryTemplate = document.querySelector('#entryTemplate');
 var fragment = document.createDocumentFragment();
@@ -66,14 +65,12 @@ function printEntry(entry) {
     if (category === CategoryEnum.expense) {
         entryAmountTemplate.classList.add('text-indigo-500');
         entryAmountTemplate.classList.remove('text-blue-500');
-        entryAmountTemplate.textContent = "-".concat("$ ", new Intl.NumberFormat("es-CO").format(amount))
-
+        entryAmountTemplate.textContent = "-".concat(amount, " \u20AC");
     }
     else {
         entryAmountTemplate.classList.add('text-blue-500');
         entryAmountTemplate.classList.remove('text-indigo-500');
-       entryAmountTemplate.textContent = "".concat("$ ", new Intl.NumberFormat("es-CO").format(amount))
-
+        entryAmountTemplate.textContent = "".concat(amount, " \u20AC");
     }
     var clone = entryTemplate.content.cloneNode(true);
     fragment.appendChild(clone);
@@ -106,8 +103,8 @@ var entryConceptInput = document.querySelector('#entryName');
 var entryAmountInput = document.querySelector('#entryAmount');
 var addIncomeButton = document.querySelector('#addIncomeButton');
 var addExpenseButton = document.querySelector('#addExpenseButton');
-addIncomeButton.addEventListener('click', addEntryFromTemplate.bind(this, CategoryEnum.income));
-addExpenseButton.addEventListener('click', addEntryFromTemplate.bind(this, CategoryEnum.expense));
+addIncomeButton.addEventListener('click', function () { return addEntryFromTemplate(CategoryEnum.income); });
+addExpenseButton.addEventListener('click', function () { return addEntryFromTemplate(CategoryEnum.expense); });
 function addEntryFromTemplate(category) {
     var conceptValue = entryConceptInput.value;
     var amountValue = entryAmountInput.value;

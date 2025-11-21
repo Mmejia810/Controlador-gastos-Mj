@@ -1,5 +1,6 @@
+import Swal, { SweetAlertResult } from 'sweetalert2';
 import { Account, Entry, CategoryEnum } from './Account.js';
-declare var Swal: any;
+
 
 let account: Account;
 const initialAccount = getAccountFromStorage();
@@ -123,7 +124,7 @@ function deleteElement(id: string, entryElement: HTMLElement) {
     confirmButtonColor: '#63b5f7',
     cancelButtonColor: '#7240ff',
     confirmButtonText: 'Sí, borrar entrada',
-  }).then((result: any) => {
+  }).then((result: SweetAlertResult) => {
     if (result.isConfirmed) {
       account.deleteEntryById(Number(id));
       console.log(account);
@@ -149,14 +150,9 @@ const addExpenseButton = document.querySelector(
   '#addExpenseButton'
 ) as HTMLButtonElement;
 
-addIncomeButton.addEventListener(
-  'click',
-  addEntryFromTemplate.bind(this, CategoryEnum.income)
-);
-addExpenseButton.addEventListener(
-  'click',
-  addEntryFromTemplate.bind(this, CategoryEnum.expense)
-);
+addIncomeButton.addEventListener('click', () => addEntryFromTemplate(CategoryEnum.income));
+addExpenseButton.addEventListener('click', () => addEntryFromTemplate(CategoryEnum.expense));
+
 
 function addEntryFromTemplate(category: CategoryEnum) {
   const conceptValue = entryConceptInput.value;

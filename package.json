@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "lint": "eslint . --ext .ts",
+    "lint": " npx eslint './src/**/*.{ts,tsx}'",
     "test": "vitest",
     "start": "node public/script/main.js"
   },
@@ -21,6 +21,8 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.47.0",
     "vitest": "^4.0.12"
+  },
+  "dependencies": {
+    "sweetalert2": "^11.26.3"
   }
- 
 }

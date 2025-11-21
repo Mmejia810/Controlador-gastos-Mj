@@ -29,13 +29,14 @@ var Account = /** @class */ (function () {
     Account.prototype.getEntries = function () {
         return this.entries;
     };
-    Account.prototype.updateBalance = function () {
-        var _this = this;
-        var balance = this.entries.reduce(function (previousValue, currentEntry) {
-            return previousValue + _this.convertAmountByCategory(currentEntry);
-        }, 0);
-        this.balance = balance;
-    };
+  Account.prototype.updateBalance = function () {
+    const balance = this.entries.reduce(
+        (previousValue, currentEntry) => this.convertAmountByCategory(currentEntry) + previousValue,
+        0
+    );
+    this.balance = balance;
+};
+
     Account.prototype.convertAmountByCategory = function (entry) {
         var category = entry.category, amount = entry.amount;
         if (category === CategoryEnum.expense) {

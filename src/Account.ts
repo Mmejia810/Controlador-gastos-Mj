@@ -1,6 +1,6 @@
 import { getRandomId } from './utils.js';
 
-export interface Entry {
+export interface EntryData {
   id: number;
   concept: string;
   amount: number;
@@ -12,9 +12,11 @@ export enum CategoryEnum {
   income = 'Income',
 }
 
-export interface Account {
+export interface AccountData {
   id: number;
   name: string;
+   entries: Entry[];
+  balance: number;
 
   addEntry(entry: Entry): boolean;
   deleteEntryById(id: number): boolean;
@@ -22,16 +24,18 @@ export interface Account {
   getEntries(): Entry[];
 }
 
-export class Account implements Account {
-  private entries: Entry[];
-  private balance: number;
+export class Account implements AccountData {
+  public entries: Entry[];
+  public balance: number;
 
-  constructor(account: Account = {} as Account) {
+  constructor(account: Partial<Account> = {}) {
     this.id = account.id || getRandomId();
     this.name = account.name || 'Nueva Cuenta';
     this.entries = account.entries || [];
     this.balance = account.balance || 0;
   }
+  id: number;
+  name: string;
 
   addEntry(entry: Entry): boolean {
     this.entries.push(entry);
@@ -51,11 +55,12 @@ export class Account implements Account {
     return this.entries;
   }
 
-  private updateBalance(): void {
-    const balance = this.entries.reduce((previousValue, currentEntry) => {
-      return previousValue + this.convertAmountByCategory(currentEntry);
-    }, 0);
-    this.balance = balance;
+private updateBalance(): void {
+    // Arrow function evita _this = this
+    this.balance = this.entries.reduce(
+      (previousValue, currentEntry) => previousValue + this.convertAmountByCategory(currentEntry),
+      0
+    );
   }
 
   private convertAmountByCategory(entry: Entry): number {
@@ -67,7 +72,7 @@ export class Account implements Account {
   }
 }
 
-export class Entry implements Entry {
+export class Entry implements EntryData {
   public id: number;
   constructor(
     public concept: string,
